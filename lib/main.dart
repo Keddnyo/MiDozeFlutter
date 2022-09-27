@@ -82,11 +82,17 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget button(String label) {
+  Widget button(String label, String deviceSource, String productionSource) {
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Button pressed, $deviceSource, $productionSource'),
+            ),
+          );
+        },
         child: Text(label),
       ),
     );
@@ -100,7 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
           textField('productionSource'),
           textField('appname'),
           textField('appVersion'),
-          button('Submit')
+          button('Submit', '12', '256')
         ],
       ),
     );
