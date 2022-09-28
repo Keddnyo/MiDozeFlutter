@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'firmware.dart';
 import 'package:http/http.dart' as http;
-import 'dart:html' as html;
 
 void main() {
   runApp(const MyApp());
@@ -152,11 +152,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _loadFirmwareData() async {
     await http.get(
-      Uri(
-        scheme: 'https',
-        host: 'api.amazfit.com',
-        path: 'devices/ALL/hasNewVersion',
-        queryParameters: {
+      Uri.https(
+        'thingproxy.freeboard.io',
+        'fetch/https://api.amazfit.com/devices/ALL/hasNewVersion',
+        {
           'productId': '0',
           'vendorSource': '0',
           'resourceVersion': '0',
@@ -205,21 +204,17 @@ class _MyHomePageState extends State<MyHomePage> {
         'Host': 'api.amazfit.com',
         'Connection': 'Keep-Alive',
         'accept-encoding': 'gzip',
-        'accept': 'application/json',
-        'Access-Control-Allow-Origin': 'keddnyo.github.io',
-        'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, PUT, DELETE, HEAD',
-        'Access-Control-Allow-Headers':
-            'custId, appId, Origin, Content-Type, Cookie, X-CSRF-TOKEN, Accept, Authorization, X-XSRF-TOKEN, Access-Control-Allow-Origin',
-        'Access-Control-Expose-Headers': 'Authorization, authenticated',
-        'Access-Control-Max-Age': '1728000',
-        'Access-Control-Allow-Credentials': 'true',
+        'accept': '*/*',
+        'Access-Control-Allow-Origin': '*',
       },
     ).then(
       (firmware) {
         if (firmware.statusCode == 200) {
           var decodedResponse = jsonDecode(firmware.body);
-          var _firmwareUrl = Firmware.fromJson(decodedResponse).firmwareUrl;
-          html.window.open(_firmwareUrl, "_blank");
+          if (decodedResponse['firmwareUrl'] != null) {
+            var _firmwareUrl = Firmware.fromJson(decodedResponse).firmwareUrl;
+            _launchUrl(_firmwareUrl);
+          }
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -229,5 +224,11 @@ class _MyHomePageState extends State<MyHomePage> {
         }
       },
     );
+  }
+
+  Future<void> _launchUrl(String url) async {
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
+    }
   }
 }
