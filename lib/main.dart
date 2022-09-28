@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'firmware.dart';
 import 'package:http/http.dart' as http;
-import 'package:url_launcher/url_launcher.dart';
 import 'dart:html' as html;
 
 void main() {
@@ -156,7 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
       Uri(
         scheme: 'https',
         host: 'api.amazfit.com',
-        path: '/devices/ALL/hasNewVersion',
+        path: 'devices/ALL/hasNewVersion',
         queryParameters: {
           'productId': '0',
           'vendorSource': '0',
@@ -206,8 +205,14 @@ class _MyHomePageState extends State<MyHomePage> {
         'Host': 'api.amazfit.com',
         'Connection': 'Keep-Alive',
         'accept-encoding': 'gzip',
-        'accept': '*/*',
-        'Access-Control-Allow-Origin': '*',
+        'accept': 'application/json',
+        'Access-Control-Allow-Origin': 'keddnyo.github.io',
+        'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, PUT, DELETE, HEAD',
+        'Access-Control-Allow-Headers':
+            'custId, appId, Origin, Content-Type, Cookie, X-CSRF-TOKEN, Accept, Authorization, X-XSRF-TOKEN, Access-Control-Allow-Origin',
+        'Access-Control-Expose-Headers': 'Authorization, authenticated',
+        'Access-Control-Max-Age': '1728000',
+        'Access-Control-Allow-Credentials': 'true',
       },
     ).then(
       (firmware) {
