@@ -152,10 +152,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _loadFirmwareData() async {
     await http.get(
-      Uri.https(
-        'thingproxy.freeboard.io',
-        'fetch/https://api.amazfit.com/devices/ALL/hasNewVersion',
-        {
+      Uri(
+        scheme: 'https',
+        host: 'cors-anywhere.herokuapp.com',
+        path: 'https://api.amazfit.com/devices/ALL/hasNewVersion',
+        queryParameters: {
           'productId': '0',
           'vendorSource': '0',
           'resourceVersion': '0',
