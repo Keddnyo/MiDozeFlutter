@@ -212,8 +212,8 @@ class _MyHomePageState extends State<MyHomePage> {
         if (firmware.statusCode == 200) {
           var decodedResponse = jsonDecode(firmware.body);
           if (decodedResponse['firmwareUrl'] != null) {
-            var _firmwareUrl = Firmware.fromJson(decodedResponse).firmwareUrl;
-            _launchUrl(_firmwareUrl);
+            var firmwareUrl = Firmware.fromJson(decodedResponse).resourceUrl;
+            _launchUrl(firmwareUrl);
           }
         } else {
           ScaffoldMessenger.of(context).showSnackBar(

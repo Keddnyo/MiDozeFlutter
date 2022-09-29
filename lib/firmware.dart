@@ -25,16 +25,16 @@ class Firmware {
 
   factory Firmware.fromJson(Map<String, dynamic> json) {
     return Firmware(
-      firmwareVersion: json['firmwareVersion'],
-      firmwareUrl: json['firmwareUrl'],
-      resourceVersion: json['resourceVersion'],
-      resourceUrl: json['resourceUrl'],
-      baseResourceVersion: json['baseResourceVersion'],
-      baseResourceUrl: json['baseResourceUrl'],
-      fontVersion: json['fontVersion'],
-      fontUrl: json['fontUrl'],
-      gpsVersion: json['gpsVersion'],
-      gpsUrl: json['gpsUrl'],
+      firmwareVersion: json['firmwareVersion'].toString(),
+      firmwareUrl: json['firmwareUrl'].toString(),
+      resourceVersion: json['resourceVersion'].toString(),
+      resourceUrl: json['resourceUrl'].toString(),
+      baseResourceVersion: json['baseResourceVersion'].toString(),
+      baseResourceUrl: json['baseResourceUrl'].toString(),
+      fontVersion: json['fontVersion'].toString(),
+      fontUrl: json['fontUrl'].toString(),
+      gpsVersion: json['gpsVersion'].toString(),
+      gpsUrl: json['gpsUrl'].toString(),
     );
   }
 }
