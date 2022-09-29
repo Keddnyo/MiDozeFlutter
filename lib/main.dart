@@ -206,6 +206,7 @@ class _MyHomePageState extends State<MyHomePage> {
         'accept-encoding': 'gzip',
         'accept': '*/*',
         'Access-Control-Allow-Origin': '*',
+        'X-Requested-With': 'XMLHttpRequest',
       },
     ).then(
       (firmware) {
