@@ -152,11 +152,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _loadFirmwareData() async {
     await http.get(
-      Uri(
-        scheme: 'https',
-        host: 'cors-anywhere.herokuapp.com',
-        path: 'https://api.amazfit.com/devices/ALL/hasNewVersion',
-        queryParameters: {
+      Uri.https(
+        'cors-anywhere.herokuapp.com',
+        'https://api.amazfit.com/devices/ALL/hasNewVersion',
+        {
           'productId': '0',
           'vendorSource': '0',
           'resourceVersion': '0',
@@ -218,8 +217,8 @@ class _MyHomePageState extends State<MyHomePage> {
           }
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Download failed.'),
+            SnackBar(
+              content: Text('Download failed: ${firmware.statusCode}.'),
             ),
           );
         }
@@ -229,7 +228,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> _launchUrl(String url) async {
     if (await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url));
+      await launchUrl(
+        Uri.parse(url),
+        webViewConfiguration:
+            const WebViewConfiguration(enableJavaScript: true),
+      );
     }
   }
 }
