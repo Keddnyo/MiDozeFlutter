@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'firmware.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_project/alert-dialog' as alert_dialog;
 
 void main() {
   runApp(const MyApp());
@@ -40,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           IconButton(
             onPressed: () {
-              showAlertDialog(context);
+              alert_dialog.AlertDialog(context);
             },
             tooltip: 'Request',
             icon: const Icon(Icons.menu_open_outlined),
@@ -54,6 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
+      body: pager(),
     );
   }
 }
@@ -66,166 +64,18 @@ Future<void> openUrl(String url) async {
   }
 }
 
-showAlertDialog(BuildContext context) {
-  Widget textField(String label, TextEditingController controller) {
-    return TextField(
-      controller: controller,
-      decoration:
-          InputDecoration(border: const OutlineInputBorder(), labelText: label),
-    );
-  }
-
-  var deviceSource = TextEditingController();
-  var productionSource = TextEditingController();
-  var appName = TextEditingController();
-  var appVersion = TextEditingController();
-  var country = TextEditingController();
-  var lang = TextEditingController();
-
-  Widget button(String label, Function() onPressed) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      child: Text(label),
-    );
-  }
-
-  void loadFirmwareData() async {
-    await http.get(
-      Uri.https(
-        'cors-anywhere.herokuapp.com',
-        'https://api.amazfit.com/devices/ALL/hasNewVersion',
-        {
-          'productId': '0',
-          'vendorSource': '0',
-          'resourceVersion': '0',
-          'firmwareFlag': '0',
-          'vendorId': '0',
-          'resourceFlag': '0',
-          'productionSource': productionSource.text,
-          'userid': '0',
-          'userId': '0',
-          'deviceSource': deviceSource.text,
-          'fontVersion': '0',
-          'fontFlag': '0',
-          'appVersion': appVersion.text,
-          'appid': '0',
-          'callid': '0',
-          'channel': '0',
-          'country': '0',
-          'cv': '0',
-          'device': '0',
-          'deviceType': 'ALL',
-          'device_type': 'android_phone',
-          'firmwareVersion': '0',
-          'hardwareVersion': '0',
-          'lang': '0',
-          'support8Bytes': 'true',
-          'timezone': '0',
-          'v': '0',
-          'gpsVersion': '0',
-          'baseResourceVersion': '0',
-        },
+Widget pager() {
+  return PageView(
+    children: const <Widget>[
+      Center(
+        child: Text('First page'),
       ),
-      headers: {
-        'hm-privacy-diagnostics': 'false',
-        'country': 'US',
-        'appplatform': 'android_phone',
-        'hm-privacy-ceip': '0',
-        'x-request-id': '0',
-        'timezone': '0',
-        'channel': '0',
-        'user-agent': '0',
-        'cv': '0',
-        'appname': appName.text,
-        'v': '0',
-        'apptoken': '0',
-        'lang': 'en_US',
-        'Host': 'api.amazfit.com',
-        'Connection': 'Keep-Alive',
-        'accept-encoding': 'gzip',
-        'accept': '*/*',
-        'Access-Control-Allow-Origin': '*',
-        'X-Requested-With': 'XMLHttpRequest',
-      },
-    ).then(
-      (firmware) {
-        if (firmware.statusCode == 200) {
-          var decodedResponse = jsonDecode(firmware.body);
-          if (decodedResponse['firmwareUrl'] != null) {
-            var firmwareUrl = Firmware.fromJson(decodedResponse).resourceUrl;
-            launch(firmwareUrl);
-          }
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Download failed: ${firmware.statusCode}.'),
-            ),
-          );
-        }
-      },
-    );
-  }
-
-  dialogContent() {
-    return <Widget>[
-      SimpleDialogOption(
-        child: textField('deviceSource', deviceSource),
+      Center(
+        child: Text('First page'),
       ),
-      SimpleDialogOption(
-        child: textField('productionSource', productionSource),
+      Center(
+        child: Text('First page'),
       ),
-      SimpleDialogOption(
-        child: textField('appVersion', appVersion),
-      ),
-      SimpleDialogOption(
-        child: textField('appName', appName),
-      ),
-      SimpleDialogOption(
-        child: textField('country', country),
-      ),
-      SimpleDialogOption(
-        child: textField('lang', lang),
-      ),
-      SimpleDialogOption(
-        child: button(
-          'OK',
-          () {
-            loadFirmwareData();
-          },
-        ),
-      ),
-      SimpleDialogOption(
-        child: button(
-          'Import data',
-          () {
-            deviceSource.text = '24';
-            productionSource.text = '256';
-            appName.text = 'com.xiaomi.hm.health';
-            appVersion.text = '6.3.3_50627';
-            country.text = 'US';
-            lang.text = 'en_US';
-          },
-        ),
-      ),
-      SimpleDialogOption(
-        child: button(
-          'Clear',
-          () {
-            deviceSource.text = '';
-            productionSource.text = '';
-            appName.text = '';
-            appVersion.text = '';
-            country.text = '';
-            lang.text = '';
-          },
-        ),
-      ),
-    ];
-  }
-
-  SimpleDialog alert = SimpleDialog(
-    children: dialogContent(),
+    ],
   );
-
-  showDialog(context: context, builder: (context) => alert);
 }
