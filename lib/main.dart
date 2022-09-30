@@ -184,6 +184,19 @@ alertDialog(BuildContext context) {
             // ignore: deprecated_member_use
             launch(firmwareUrl);
           }
+        } else if (firmware.statusCode == 403) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Please enable CORS: ${firmware.statusCode}.'),
+              action: SnackBarAction(
+                label: 'Enable',
+                onPressed: () {
+                  // ignore: deprecated_member_use
+                  launch('https://cors-anywhere.herokuapp.com/corsdemo');
+                },
+              ),
+            ),
+          );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
