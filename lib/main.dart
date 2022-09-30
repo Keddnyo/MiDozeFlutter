@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -33,15 +34,17 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  String titleBarTitle = 'MiDoze';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(titleBarTitle),
         actions: [
           IconButton(
             onPressed: () {
-              AlertDialog(context);
+              alertDialog(context);
             },
             tooltip: 'Request',
             icon: const Icon(Icons.menu_open_outlined),
@@ -58,6 +61,24 @@ class _MyHomePageState extends State<MyHomePage> {
       body: pager(),
     );
   }
+
+  Widget pager() {
+    return PageView(
+      scrollBehavior: AppScrollBehavior(),
+      scrollDirection: Axis.horizontal,
+      children: <Widget>[
+        Center(
+          child: Image.asset('assets/images/amazfit_bip.png'),
+        ),
+        Center(
+          child: Image.asset('assets/images/amazfit_bip.png'),
+        ),
+        Center(
+          child: Image.asset('assets/images/amazfit_bip.png'),
+        ),
+      ],
+    );
+  }
 }
 
 Future<void> openUrl(String url) async {
@@ -68,23 +89,7 @@ Future<void> openUrl(String url) async {
   }
 }
 
-Widget pager() {
-  return PageView(
-    children: const <Widget>[
-      Center(
-        child: Text('First page'),
-      ),
-      Center(
-        child: Text('First page'),
-      ),
-      Center(
-        child: Text('First page'),
-      ),
-    ],
-  );
-}
-
-AlertDialog(BuildContext context) {
+alertDialog(BuildContext context) {
   Widget textField(String label, TextEditingController controller) {
     return TextField(
       controller: controller,
@@ -247,4 +252,13 @@ AlertDialog(BuildContext context) {
   );
 
   showDialog(context: context, builder: (context) => alert);
+}
+
+class AppScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+        PointerDeviceKind.trackpad,
+      };
 }
