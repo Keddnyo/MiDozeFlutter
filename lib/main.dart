@@ -102,11 +102,16 @@ alertDialog(BuildContext context) {
   var productionSource = TextEditingController();
   var appName = TextEditingController();
   var appVersion = TextEditingController();
-  var country = TextEditingController();
-  var lang = TextEditingController();
 
   Widget button(String label, Function() onPressed) {
     return ElevatedButton(
+      style: ButtonStyle(
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+        ),
+      ),
       onPressed: onPressed,
       child: Text(label),
     );
@@ -199,16 +204,10 @@ alertDialog(BuildContext context) {
         child: textField('productionSource', productionSource),
       ),
       SimpleDialogOption(
+        child: textField('appname', appName),
+      ),
+      SimpleDialogOption(
         child: textField('appVersion', appVersion),
-      ),
-      SimpleDialogOption(
-        child: textField('appName', appName),
-      ),
-      SimpleDialogOption(
-        child: textField('country', country),
-      ),
-      SimpleDialogOption(
-        child: textField('lang', lang),
       ),
       SimpleDialogOption(
         child: button(
@@ -226,21 +225,6 @@ alertDialog(BuildContext context) {
             productionSource.text = '256';
             appName.text = 'com.xiaomi.hm.health';
             appVersion.text = '6.3.3_50627';
-            country.text = 'US';
-            lang.text = 'en_US';
-          },
-        ),
-      ),
-      SimpleDialogOption(
-        child: button(
-          'Clear',
-          () {
-            deviceSource.text = '';
-            productionSource.text = '';
-            appName.text = '';
-            appVersion.text = '';
-            country.text = '';
-            lang.text = '';
           },
         ),
       ),
@@ -248,6 +232,9 @@ alertDialog(BuildContext context) {
   }
 
   SimpleDialog alert = SimpleDialog(
+    title: const Text('Request'),
+    shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(16.0))),
     children: dialogContent(),
   );
 
