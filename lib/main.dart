@@ -35,10 +35,11 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
-        body: request());
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Padding(padding: const EdgeInsets.all(24.0), child: request()),
+    );
   }
 
   Widget list() {
@@ -77,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget textField(String label, TextEditingController controller) {
     return Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.all(8.0),
       child: TextField(
         controller: controller,
         decoration: InputDecoration(
@@ -90,11 +91,13 @@ class _MyHomePageState extends State<MyHomePage> {
   var productionSource = TextEditingController();
   var appName = TextEditingController();
   var appVersion = TextEditingController();
+  var country = TextEditingController();
+  var language = TextEditingController();
   var response = TextEditingController();
 
   Widget submitButton(String label) {
     return Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.all(8.0),
       child: ElevatedButton(
         onPressed: () {
           _loadFirmwareData();
@@ -106,13 +109,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget importButton(String label) {
     return Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.all(8.0),
       child: ElevatedButton(
         onPressed: () {
           deviceSource.text = '24';
           productionSource.text = '256';
           appName.text = 'com.xiaomi.hm.health';
           appVersion.text = '6.3.3_50627';
+          country.text = 'US';
+          language.text = 'en_US';
         },
         child: Text(label),
       ),
@@ -121,7 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget clearButton(String label) {
     return Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.all(8.0),
       child: ElevatedButton(
         onPressed: () {
           deviceSource.text = '';
@@ -142,6 +147,8 @@ class _MyHomePageState extends State<MyHomePage> {
           textField('productionSource', productionSource),
           textField('appname', appName),
           textField('appVersion', appVersion),
+          textField('country', country),
+          textField('language', language),
           importButton('Import'),
           submitButton('Submit'),
           clearButton('Clear')
