@@ -37,53 +37,41 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
-      ),
-      body: Padding(padding: const EdgeInsets.all(24.0), child: request()),
-    );
-  }
-
-  Widget list() {
-    return Center(
-      child: ListView.builder(
-        itemCount: 50,
-        itemBuilder: (BuildContext context, int index) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Card(
-              elevation: 8.0,
-              child: Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Center(
-                  child: Column(
-                    children: [
-                      Image.network(
-                          'https://raw.githubusercontent.com/Keddnyo/MiDoze/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png'),
-                      Text(
-                        '${index + 1}. Amazfit Bip',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
-        },
+        actions: [
+          IconButton(
+            onPressed: () {
+              showAlertDialog(context);
+            },
+            tooltip: 'Request',
+            icon: const Icon(Icons.menu_open_outlined),
+          ),
+          IconButton(
+            onPressed: () {
+              openUrl('https://github.com/keddnyo/MiDoze');
+            },
+            tooltip: 'GitHub',
+            icon: const Icon(Icons.info_outline),
+          ),
+        ],
       ),
     );
   }
+}
 
+Future<void> openUrl(String url) async {
+  if (await canLaunchUrl(Uri.parse(url))) {
+    await launchUrl(
+      Uri.parse(url),
+    );
+  }
+}
+
+showAlertDialog(BuildContext context) {
   Widget textField(String label, TextEditingController controller) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: TextField(
-        controller: controller,
-        decoration: InputDecoration(
-            border: const OutlineInputBorder(), labelText: label),
-      ),
+    return TextField(
+      controller: controller,
+      decoration:
+          InputDecoration(border: const OutlineInputBorder(), labelText: label),
     );
   }
 
@@ -92,72 +80,16 @@ class _MyHomePageState extends State<MyHomePage> {
   var appName = TextEditingController();
   var appVersion = TextEditingController();
   var country = TextEditingController();
-  var language = TextEditingController();
-  var response = TextEditingController();
+  var lang = TextEditingController();
 
-  Widget submitButton(String label) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ElevatedButton(
-        onPressed: () {
-          _loadFirmwareData();
-        },
-        child: Text(label),
-      ),
+  Widget button(String label, Function() onPressed) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      child: Text(label),
     );
   }
 
-  Widget importButton(String label) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ElevatedButton(
-        onPressed: () {
-          deviceSource.text = '24';
-          productionSource.text = '256';
-          appName.text = 'com.xiaomi.hm.health';
-          appVersion.text = '6.3.3_50627';
-          country.text = 'US';
-          language.text = 'en_US';
-        },
-        child: Text(label),
-      ),
-    );
-  }
-
-  Widget clearButton(String label) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ElevatedButton(
-        onPressed: () {
-          deviceSource.text = '';
-          productionSource.text = '';
-          appName.text = '';
-          appVersion.text = '';
-        },
-        child: Text(label),
-      ),
-    );
-  }
-
-  Widget request() {
-    return Center(
-      child: ListView(
-        children: [
-          textField('deviceSource', deviceSource),
-          textField('productionSource', productionSource),
-          textField('appname', appName),
-          textField('appVersion', appVersion),
-          textField('country', country),
-          textField('language', language),
-          importButton('Import'),
-          submitButton('Submit'),
-          clearButton('Clear')
-        ],
-      ),
-    );
-  }
-
-  void _loadFirmwareData() async {
+  void loadFirmwareData() async {
     await http.get(
       Uri.https(
         'cors-anywhere.herokuapp.com',
@@ -221,7 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
           var decodedResponse = jsonDecode(firmware.body);
           if (decodedResponse['firmwareUrl'] != null) {
             var firmwareUrl = Firmware.fromJson(decodedResponse).resourceUrl;
-            _launchUrl(firmwareUrl);
+            launch(firmwareUrl);
           }
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -234,11 +166,66 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Future<void> _launchUrl(String url) async {
-    if (await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(
-        Uri.parse(url),
-      );
-    }
+  dialogContent() {
+    return <Widget>[
+      SimpleDialogOption(
+        child: textField('deviceSource', deviceSource),
+      ),
+      SimpleDialogOption(
+        child: textField('productionSource', productionSource),
+      ),
+      SimpleDialogOption(
+        child: textField('appVersion', appVersion),
+      ),
+      SimpleDialogOption(
+        child: textField('appName', appName),
+      ),
+      SimpleDialogOption(
+        child: textField('country', country),
+      ),
+      SimpleDialogOption(
+        child: textField('lang', lang),
+      ),
+      SimpleDialogOption(
+        child: button(
+          'OK',
+          () {
+            loadFirmwareData();
+          },
+        ),
+      ),
+      SimpleDialogOption(
+        child: button(
+          'Import data',
+          () {
+            deviceSource.text = '24';
+            productionSource.text = '256';
+            appName.text = 'com.xiaomi.hm.health';
+            appVersion.text = '6.3.3_50627';
+            country.text = 'US';
+            lang.text = 'en_US';
+          },
+        ),
+      ),
+      SimpleDialogOption(
+        child: button(
+          'Clear',
+          () {
+            deviceSource.text = '';
+            productionSource.text = '';
+            appName.text = '';
+            appVersion.text = '';
+            country.text = '';
+            lang.text = '';
+          },
+        ),
+      ),
+    ];
   }
+
+  SimpleDialog alert = SimpleDialog(
+    children: dialogContent(),
+  );
+
+  showDialog(context: context, builder: (context) => alert);
 }
