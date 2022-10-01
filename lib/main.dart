@@ -74,13 +74,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 Expanded(
                   child: Image.asset('assets/images/amazfit_bip.png'),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Text(
-                    '$index. Amazfit Bip',
-                    style: const TextStyle(
-                        height: 20, fontWeight: FontWeight.bold),
-                  ),
+                Text(
+                  '$index. Amazfit Bip',
+                  style:
+                      const TextStyle(height: 20, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
