@@ -1,5 +1,5 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'ui_elements/dialog.dart';
 import 'remote/requests.dart';
 
 void main() {
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'MiDoze',
-      theme: ThemeData(primarySwatch: Colors.deepPurple),
+      theme: ThemeData(primarySwatch: Colors.blue),
       home: const MyHomePage(title: 'MiDoze'),
     );
   }
@@ -35,7 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(titleBarTitle),
+        title: Text(widget.title),
         actions: [
           IconButton(
             onPressed: () {
@@ -53,109 +53,26 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      body: pager(),
+      body: deviceList(),
     );
   }
 
-  Widget pager() {
-    return PageView(
-      scrollBehavior: AppScrollBehavior(),
-      scrollDirection: Axis.horizontal,
-      children: <Widget>[
-        Center(
-          child: Image.asset('assets/images/amazfit_bip.png'),
-        ),
-        Center(
-          child: Image.asset('assets/images/amazfit_bip.png'),
-        ),
-        Center(
-          child: Image.asset('assets/images/amazfit_bip.png'),
-        ),
-      ],
-    );
-  }
-}
-
-alertDialog(BuildContext context) {
-  Widget textField(String label, TextEditingController controller) {
-    return TextField(
-      controller: controller,
-      decoration:
-          InputDecoration(border: const OutlineInputBorder(), labelText: label),
-    );
-  }
-
-  var deviceSource = TextEditingController();
-  var productionSource = TextEditingController();
-  var appName = TextEditingController();
-  var appVersion = TextEditingController();
-
-  Widget button(String label, Function() onPressed) {
-    return ElevatedButton(
-      style: ButtonStyle(
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0),
+  Widget deviceList() {
+    return GridView.extent(
+      crossAxisSpacing: 5,
+      mainAxisSpacing: 5,
+      padding: const EdgeInsets.all(10.0),
+      maxCrossAxisExtent: 200,
+      children: List.generate(
+        50,
+        (index) => Card(
+          elevation: 10.0,
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Image.asset('assets/images/Amazfit_Bip.png'),
           ),
         ),
       ),
-      onPressed: onPressed,
-      child: Text(label),
     );
   }
-
-  dialogContent() {
-    return <Widget>[
-      SimpleDialogOption(
-        child: textField('deviceSource', deviceSource),
-      ),
-      SimpleDialogOption(
-        child: textField('productionSource', productionSource),
-      ),
-      SimpleDialogOption(
-        child: textField('appname', appName),
-      ),
-      SimpleDialogOption(
-        child: textField('appVersion', appVersion),
-      ),
-      SimpleDialogOption(
-        child: button(
-          'OK',
-          () {
-            getFirmwareData(context, deviceSource.text, productionSource.text,
-                appName.text, appVersion.text);
-          },
-        ),
-      ),
-      SimpleDialogOption(
-        child: button(
-          'Import data',
-          () {
-            deviceSource.text = '24';
-            productionSource.text = '256';
-            appName.text = 'com.xiaomi.hm.health';
-            appVersion.text = '6.3.3_50627';
-          },
-        ),
-      ),
-    ];
-  }
-
-  SimpleDialog alert = SimpleDialog(
-    title: const Text('Request'),
-    shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(16.0))),
-    children: dialogContent(),
-  );
-
-  showDialog(context: context, builder: (context) => alert);
-}
-
-class AppScrollBehavior extends MaterialScrollBehavior {
-  @override
-  Set<PointerDeviceKind> get dragDevices => {
-        PointerDeviceKind.touch,
-        PointerDeviceKind.mouse,
-        PointerDeviceKind.trackpad,
-      };
 }
