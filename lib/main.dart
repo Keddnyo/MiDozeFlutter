@@ -1,11 +1,6 @@
-import 'dart:convert';
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:http/http.dart' as http;
-
-import 'firmware.dart';
+import 'remote/requests.dart';
 
 void main() {
   runApp(const MyApp());
@@ -81,14 +76,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-Future<void> openUrl(String url) async {
-  if (await canLaunchUrl(Uri.parse(url))) {
-    await launchUrl(
-      Uri.parse(url),
-    );
-  }
-}
-
 alertDialog(BuildContext context) {
   Widget textField(String label, TextEditingController controller) {
     return TextField(
@@ -117,97 +104,6 @@ alertDialog(BuildContext context) {
     );
   }
 
-  void loadFirmwareData() async {
-    await http.get(
-      Uri.https(
-        'cors-anywhere.herokuapp.com',
-        'https://api.amazfit.com/devices/ALL/hasNewVersion',
-        {
-          'productId': '0',
-          'vendorSource': '0',
-          'resourceVersion': '0',
-          'firmwareFlag': '0',
-          'vendorId': '0',
-          'resourceFlag': '0',
-          'productionSource': productionSource.text,
-          'userid': '0',
-          'userId': '0',
-          'deviceSource': deviceSource.text,
-          'fontVersion': '0',
-          'fontFlag': '0',
-          'appVersion': appVersion.text,
-          'appid': '0',
-          'callid': '0',
-          'channel': '0',
-          'country': '0',
-          'cv': '0',
-          'device': '0',
-          'deviceType': 'ALL',
-          'device_type': 'android_phone',
-          'firmwareVersion': '0',
-          'hardwareVersion': '0',
-          'lang': '0',
-          'support8Bytes': 'true',
-          'timezone': '0',
-          'v': '0',
-          'gpsVersion': '0',
-          'baseResourceVersion': '0',
-        },
-      ),
-      headers: {
-        'hm-privacy-diagnostics': 'false',
-        'country': 'US',
-        'appplatform': 'android_phone',
-        'hm-privacy-ceip': '0',
-        'x-request-id': '0',
-        'timezone': '0',
-        'channel': '0',
-        'user-agent': '0',
-        'cv': '0',
-        'appname': appName.text,
-        'v': '0',
-        'apptoken': '0',
-        'lang': 'en_US',
-        'Host': 'api.amazfit.com',
-        'Connection': 'Keep-Alive',
-        'accept-encoding': 'gzip',
-        'accept': '*/*',
-        'Access-Control-Allow-Origin': '*',
-        'X-Requested-With': 'XMLHttpRequest',
-      },
-    ).then(
-      (firmware) {
-        if (firmware.statusCode == 200) {
-          var decodedResponse = jsonDecode(firmware.body);
-          if (decodedResponse['firmwareUrl'] != null) {
-            var firmwareUrl = Firmware.fromJson(decodedResponse).resourceUrl;
-            // ignore: deprecated_member_use
-            launch(firmwareUrl);
-          }
-        } else if (firmware.statusCode == 403) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Please enable CORS: ${firmware.statusCode}.'),
-              action: SnackBarAction(
-                label: 'Enable',
-                onPressed: () {
-                  // ignore: deprecated_member_use
-                  launch('https://cors-anywhere.herokuapp.com/corsdemo');
-                },
-              ),
-            ),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Download failed: ${firmware.statusCode}.'),
-            ),
-          );
-        }
-      },
-    );
-  }
-
   dialogContent() {
     return <Widget>[
       SimpleDialogOption(
@@ -226,7 +122,8 @@ alertDialog(BuildContext context) {
         child: button(
           'OK',
           () {
-            loadFirmwareData();
+            getFirmwareData(context, deviceSource.text, productionSource.text,
+                appName.text, appVersion.text);
           },
         ),
       ),
