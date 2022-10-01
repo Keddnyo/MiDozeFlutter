@@ -62,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
       crossAxisSpacing: 5,
       mainAxisSpacing: 5,
       padding: const EdgeInsets.all(10.0),
-      maxCrossAxisExtent: 200,
+      maxCrossAxisExtent: 250,
       children: List.generate(
         50,
         (index) => Card(
