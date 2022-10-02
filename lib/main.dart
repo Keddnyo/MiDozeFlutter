@@ -78,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   padding: EdgeInsets.all(5.0),
                   child: Text(
                     'Amazfit Bip',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                   ),
                 ),
               ],

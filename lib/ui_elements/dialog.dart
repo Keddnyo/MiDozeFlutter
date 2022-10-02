@@ -83,5 +83,6 @@ alertDialog(BuildContext context) {
     children: dialogContent(),
   );
 
-  showDialog(context: context, builder: (context) => alert);
+  showDialog(
+      context: context, barrierDismissible: false, builder: (context) => alert);
 }
