@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'MiDoze',
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: ThemeData(primarySwatch: Colors.deepPurple),
       home: const MyHomePage(title: 'MiDoze'),
     );
   }
@@ -36,8 +36,9 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-        ),
+            borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(20),
+        )),
         title: Text(widget.title),
         actions: [
           IconButton(
@@ -70,6 +71,15 @@ class _MyHomePageState extends State<MyHomePage> {
         50,
         (index) => Card(
           elevation: 10.0,
+          shape: const RoundedRectangleBorder(
+            side: BorderSide(
+              color: Colors.black,
+              width: 1,
+            ),
+            borderRadius: BorderRadius.all(
+              Radius.circular(15),
+            ),
+          ),
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Column(
@@ -78,10 +88,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Image.asset('assets/images/amazfit_bip.png'),
                 ),
                 const Padding(
-                  padding: EdgeInsets.all(5),
+                  padding: EdgeInsets.all(3),
                   child: Text(
                     'Amazfit Bip',
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                   ),
                 ),
               ],
