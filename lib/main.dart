@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'ui_elements/dialog.dart';
 import 'remote/requests.dart';
 
@@ -31,10 +32,16 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   String titleBarTitle = 'MiDoze';
 
+  int index = 1;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarColor: Colors.deepPurple,
+          systemNavigationBarColor: Colors.red,
+        ),
         title: Text(widget.title),
         actions: [
           IconButton(
@@ -65,6 +72,25 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
         child: deviceList(),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+              icon: Icon(Icons.access_time_outlined), label: "Dials"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.memory_outlined), label: "ROMs"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.widgets_outlined), label: "Apps")
+        ],
+        currentIndex: index,
+        onTap: (int i) {
+          setState(() {
+            index = i;
+          });
+        },
+        showUnselectedLabels: false,
+        backgroundColor: Colors.red,
+        selectedItemColor: Colors.white,
       ),
     );
   }
