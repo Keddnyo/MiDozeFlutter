@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'ui_elements/dialog.dart';
 import 'remote/requests.dart';
 
 void main() {
   runApp(const MyApp());
 }
+
+MaterialColor accentColor = Colors.blue;
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -38,10 +39,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        systemOverlayStyle: const SystemUiOverlayStyle(
-          statusBarColor: Colors.deepPurple,
-          systemNavigationBarColor: Colors.red,
-        ),
         title: Text(widget.title),
         actions: [
           IconButton(
@@ -61,36 +58,54 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
               Colors.deepPurple,
-              Colors.red,
+              accentColor,
             ],
           ),
         ),
         child: deviceList(),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        type: BottomNavigationBarType.shifting,
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-              icon: Icon(Icons.access_time_outlined), label: "Dials"),
+              icon: const Icon(Icons.access_time_outlined),
+              label: "Dials",
+              backgroundColor: accentColor),
           BottomNavigationBarItem(
-              icon: Icon(Icons.memory_outlined), label: "ROMs"),
+              icon: const Icon(Icons.memory_outlined),
+              label: "ROMs",
+              backgroundColor: accentColor),
           BottomNavigationBarItem(
-              icon: Icon(Icons.widgets_outlined), label: "Apps")
+              icon: const Icon(Icons.widgets_outlined),
+              label: "Apps",
+              backgroundColor: accentColor)
         ],
         currentIndex: index,
         onTap: (int i) {
-          setState(() {
-            index = i;
-          });
+          setState(
+            () {
+              index = i;
+
+              switch (i) {
+                case 0:
+                  accentColor = Colors.deepOrange;
+                  break;
+                case 2:
+                  accentColor = Colors.blueGrey;
+                  break;
+                default:
+                  accentColor = Colors.blue;
+              }
+            },
+          );
         },
         showUnselectedLabels: false,
-        backgroundColor: Colors.red,
-        selectedItemColor: Colors.white,
       ),
     );
   }
