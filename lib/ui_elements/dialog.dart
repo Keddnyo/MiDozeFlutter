@@ -79,7 +79,7 @@ alertDialog(BuildContext context) {
       ],
     ),
     shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(16.0))),
+        borderRadius: BorderRadius.all(Radius.circular(20))),
     children: dialogContent(),
   );
 

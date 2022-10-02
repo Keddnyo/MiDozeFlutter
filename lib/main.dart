@@ -35,6 +35,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
         title: Text(widget.title),
         actions: [
           IconButton(
@@ -61,21 +64,21 @@ class _MyHomePageState extends State<MyHomePage> {
     return GridView.extent(
       crossAxisSpacing: 5,
       mainAxisSpacing: 5,
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(15),
       maxCrossAxisExtent: 300,
       children: List.generate(
         50,
         (index) => Card(
           elevation: 10.0,
           child: Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10),
             child: Column(
               children: [
                 Expanded(
                   child: Image.asset('assets/images/amazfit_bip.png'),
                 ),
                 const Padding(
-                  padding: EdgeInsets.all(5.0),
+                  padding: EdgeInsets.all(5),
                   child: Text(
                     'Amazfit Bip',
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
