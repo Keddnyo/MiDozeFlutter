@@ -65,7 +65,19 @@ alertDialog(BuildContext context) {
   }
 
   SimpleDialog alert = SimpleDialog(
-    title: const Text('Request'),
+    title: Row(
+      children: [
+        const Text('Request'),
+        const Spacer(),
+        IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          tooltip: 'Close',
+          icon: const Icon(Icons.close),
+        ),
+      ],
+    ),
     shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(16.0))),
     children: dialogContent(),

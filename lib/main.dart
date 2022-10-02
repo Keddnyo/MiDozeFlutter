@@ -62,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
       crossAxisSpacing: 5,
       mainAxisSpacing: 5,
       padding: const EdgeInsets.all(10.0),
-      maxCrossAxisExtent: 250,
+      maxCrossAxisExtent: 300,
       children: List.generate(
         50,
         (index) => Card(
@@ -74,20 +74,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 Expanded(
                   child: Image.asset('assets/images/amazfit_bip.png'),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Column(
-                    children: [
-                      const Text(
-                        'Amazfit Bip',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        '${index++} it.',
-                        style: const TextStyle(fontSize: 12),
-                      ),
-                    ],
+                const Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Text(
+                    'Amazfit Bip',
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                   ),
                 ),
               ],
