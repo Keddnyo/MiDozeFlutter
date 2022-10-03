@@ -150,11 +150,12 @@ class _MyHomePageState extends State<MyHomePage> {
                         Image.asset(app_repo.Application.appList[index].icon),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(3),
+                    padding: const EdgeInsets.all(5),
                     child: Text(
                       app_repo.Application.appList[index].title,
                       style: const TextStyle(
                           fontSize: 14, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
                     ),
                   ),
                 ],
