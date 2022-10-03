@@ -97,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   accentColor = Colors.deepOrange;
                   break;
                 case 2:
-                  accentColor = Colors.blueGrey;
+                  accentColor = Colors.green;
                   break;
                 default:
                   accentColor = Colors.blue;
