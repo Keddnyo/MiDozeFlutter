@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'MiDoze',
-      theme: ThemeData(primarySwatch: accentColor),
+      theme: ThemeData(primarySwatch: accentColor, useMaterial3: true),
       home: const MyHomePage(title: 'MiDoze'),
     );
   }
@@ -74,72 +74,64 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              accentColor,
-              Colors.red,
-            ],
-          ),
-        ),
-        child: PageView(
-          controller: pageController,
-          scrollBehavior: AppScrollBehavior(),
-          scrollDirection: Axis.horizontal,
-          onPageChanged: (currentPage) {
-            pageChanged(currentPage);
-          },
+      body: SafeArea(
+        child: Row(
           children: [
-            const Text('Page 1'),
-            const Text('Page 2'),
-            deviceList(),
+            NavigationRail(
+              selectedIndex: pageIndex,
+              labelType: NavigationRailLabelType.all,
+              onDestinationSelected: (index) {
+                setState(
+                  () {
+                    pageChanged(pageIndex);
+                  },
+                );
+              },
+              destinations: const [
+                NavigationRailDestination(
+                    icon: Icon(Icons.access_time_outlined),
+                    selectedIcon: Icon(Icons.access_time),
+                    label: Text('Dials')),
+                NavigationRailDestination(
+                    icon: Icon(Icons.memory_outlined),
+                    selectedIcon: Icon(Icons.memory),
+                    label: Text('ROMs')),
+                NavigationRailDestination(
+                    icon: Icon(Icons.widgets_outlined),
+                    selectedIcon: Icon(Icons.widgets),
+                    label: Text('Apps'))
+              ],
+            ),
+            const VerticalDivider(thickness: 1, width: 1),
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      accentColor,
+                      Colors.red,
+                    ],
+                  ),
+                ),
+                child: PageView(
+                  controller: pageController,
+                  scrollBehavior: AppScrollBehavior(),
+                  scrollDirection: Axis.horizontal,
+                  onPageChanged: (currentPage) {
+                    pageChanged(currentPage);
+                  },
+                  children: [
+                    const Text('Page 1'),
+                    const Text('Page 2'),
+                    deviceList(),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.shifting,
-        selectedItemColor: accentColor,
-        unselectedItemColor: Colors.blueGrey,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.access_time_outlined),
-            label: "Dials",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.memory_outlined),
-            label: "ROMs",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.widgets_outlined),
-            label: "Apps",
-          )
-        ],
-        currentIndex: pageIndex,
-        onTap: (int i) {
-          setState(
-            () {
-              pageIndex = i;
-              pageController.animateToPage(pageIndex,
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.ease);
-
-              switch (i) {
-                case 0:
-                  changeTitle('Dials');
-                  break;
-                case 2:
-                  changeTitle('Apps');
-                  break;
-                default:
-                  changeTitle('ROMs');
-              }
-            },
-          );
-        },
-        showUnselectedLabels: false,
       ),
     );
   }
