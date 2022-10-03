@@ -32,7 +32,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String titleBarTitle = 'MiDoze';
+  String appBarTitle = 'MiDoze';
+
+  void changeTitle(String title) {
+    setState(() {
+      appBarTitle = title;
+    });
+  }
 
   int index = 2;
 
@@ -40,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(appBarTitle),
         actions: [
           IconButton(
             onPressed: () {
@@ -95,12 +101,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
               switch (i) {
                 case 0:
+                  changeTitle('Dials');
                   accentColor = Colors.deepOrange;
                   break;
                 case 2:
+                  changeTitle('Apps');
                   accentColor = Colors.green;
                   break;
                 default:
+                  changeTitle('ROMs');
                   accentColor = Colors.blue;
               }
             },
