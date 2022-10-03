@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'ui_elements/dialog.dart';
 import 'remote/requests.dart';
+import '../repositories/application.dart' as app_repo;
 
 void main() {
   runApp(const MyApp());
 }
 
-MaterialColor accentColor = Colors.blue;
+MaterialColor accentColor = Colors.green;
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -33,7 +34,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   String titleBarTitle = 'MiDoze';
 
-  int index = 1;
+  int index = 2;
 
   @override
   Widget build(BuildContext context) {
@@ -117,33 +118,38 @@ class _MyHomePageState extends State<MyHomePage> {
       padding: const EdgeInsets.all(15),
       maxCrossAxisExtent: 200,
       children: List.generate(
-        50,
-        (index) => Card(
-          elevation: 10.0,
-          shape: const RoundedRectangleBorder(
-            side: BorderSide(
-              color: Colors.black,
-              width: 1,
+        app_repo.Application.appList.length,
+        (index) => InkWell(
+          onTap: () => {openUrl(app_repo.Application.appList[index].url)},
+          child: Card(
+            elevation: 10.0,
+            shape: const RoundedRectangleBorder(
+              side: BorderSide(
+                color: Colors.black,
+                width: 1,
+              ),
+              borderRadius: BorderRadius.all(
+                Radius.circular(15),
+              ),
             ),
-            borderRadius: BorderRadius.all(
-              Radius.circular(15),
-            ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              children: [
-                Expanded(
-                  child: Image.asset('assets/images/amazfit_bip.png'),
-                ),
-                const Padding(
-                  padding: EdgeInsets.all(3),
-                  child: Text(
-                    'Amazfit Bip',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  Expanded(
+                    child:
+                        Image.asset(app_repo.Application.appList[index].icon),
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.all(3),
+                    child: Text(
+                      app_repo.Application.appList[index].title,
+                      style: const TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
