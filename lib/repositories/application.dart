@@ -5,32 +5,33 @@ class Application {
     app.Application(
       icon: 'assets/images/apps/zepp.png',
       title: 'Zepp',
-      url: 'com.huami.watch.hmwatchmanager',
+      url:
+          'https://play.google.com/store/apps/details?id=com.huami.watch.hmwatchmanager',
     ),
     app.Application(
       icon: 'assets/images/apps/mi_fit.png',
       title: 'Zepp Life',
-      url: 'com.xiaomi.hm.health',
+      url: 'https://play.google.com/store/apps/details?id=com.xiaomi.hm.health',
     ),
     app.Application(
       icon: 'assets/images/apps/notify_amazfit.png',
       title: 'Notify for Amazfit',
-      url: 'com.mc.amazfit1',
+      url: 'https://play.google.com/store/apps/details?id=com.mc.amazfit1',
     ),
     app.Application(
       icon: 'assets/images/apps/notify_mi_band.png',
       title: 'Notify for Mi Band',
-      url: 'com.mc.miband1',
+      url: 'https://play.google.com/store/apps/details?id=com.mc.miband1',
     ),
     app.Application(
       icon: 'assets/images/apps/notify_lite_mi_band.png',
       title: 'Notify Lite for Mi Band',
-      url: 'com.mc.mibandlite1',
+      url: 'https://play.google.com/store/apps/details?id=com.mc.mibandlite1',
     ),
     app.Application(
       icon: 'assets/images/apps/notify_lite.png',
       title: 'Notify Lite',
-      url: 'com.mc.notify',
+      url: 'https://play.google.com/store/apps/details?id=com.mc.notify',
     ),
     app.Application(
       icon: 'assets/images/apps/mi_bandage.png',
