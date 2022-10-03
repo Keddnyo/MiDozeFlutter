@@ -7,7 +7,7 @@ void main() {
   runApp(const MyApp());
 }
 
-MaterialColor accentColor = Colors.green;
+MaterialColor accentColor = Colors.blue;
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -102,15 +102,15 @@ class _MyHomePageState extends State<MyHomePage> {
               switch (i) {
                 case 0:
                   changeTitle('Dials');
-                  accentColor = Colors.deepOrange;
+                  accentColor = Colors.green;
                   break;
                 case 2:
                   changeTitle('Apps');
-                  accentColor = Colors.green;
+                  accentColor = Colors.blue;
                   break;
                 default:
                   changeTitle('ROMs');
-                  accentColor = Colors.blue;
+                  accentColor = Colors.deepOrange;
               }
             },
           );
