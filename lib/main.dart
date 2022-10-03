@@ -1,13 +1,15 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'ui_elements/dialog.dart';
 import 'remote/requests.dart';
-import '../repositories/application.dart' as app_repo;
+import 'ui_elements/page_view/elements/application.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-MaterialColor accentColor = Colors.blue;
+MaterialColor accentColor = Colors.deepPurple;
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -16,7 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'MiDoze',
-      theme: ThemeData(primarySwatch: Colors.deepPurple),
+      theme: ThemeData(primarySwatch: accentColor),
       home: const MyHomePage(title: 'MiDoze'),
     );
   }
@@ -40,7 +42,15 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  int index = 2;
+  int pageIndex = 2;
+
+  void pageChanged(int index) {
+    setState(
+      () {
+        pageIndex = index;
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,47 +80,61 @@ class _MyHomePageState extends State<MyHomePage> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Colors.deepPurple,
               accentColor,
+              Colors.red,
             ],
           ),
         ),
-        child: deviceList(),
+        child: PageView(
+          controller: pageController,
+          scrollBehavior: AppScrollBehavior(),
+          scrollDirection: Axis.horizontal,
+          onPageChanged: (currentPage) {
+            pageChanged(currentPage);
+          },
+          children: [
+            const Text('Page 1'),
+            const Text('Page 2'),
+            deviceList(),
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.shifting,
-        items: <BottomNavigationBarItem>[
+        selectedItemColor: accentColor,
+        unselectedItemColor: Colors.blueGrey,
+        items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-              icon: const Icon(Icons.access_time_outlined),
-              label: "Dials",
-              backgroundColor: accentColor),
+            icon: Icon(Icons.access_time_outlined),
+            label: "Dials",
+          ),
           BottomNavigationBarItem(
-              icon: const Icon(Icons.memory_outlined),
-              label: "ROMs",
-              backgroundColor: accentColor),
+            icon: Icon(Icons.memory_outlined),
+            label: "ROMs",
+          ),
           BottomNavigationBarItem(
-              icon: const Icon(Icons.widgets_outlined),
-              label: "Apps",
-              backgroundColor: accentColor)
+            icon: Icon(Icons.widgets_outlined),
+            label: "Apps",
+          )
         ],
-        currentIndex: index,
+        currentIndex: pageIndex,
         onTap: (int i) {
           setState(
             () {
-              index = i;
+              pageIndex = i;
+              pageController.animateToPage(pageIndex,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.ease);
 
               switch (i) {
                 case 0:
                   changeTitle('Dials');
-                  accentColor = Colors.green;
                   break;
                 case 2:
                   changeTitle('Apps');
-                  accentColor = Colors.blue;
                   break;
                 default:
                   changeTitle('ROMs');
-                  accentColor = Colors.deepOrange;
               }
             },
           );
@@ -119,51 +143,19 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-
-  Widget deviceList() {
-    return GridView.extent(
-      crossAxisSpacing: 5,
-      mainAxisSpacing: 5,
-      padding: const EdgeInsets.all(15),
-      maxCrossAxisExtent: 200,
-      children: List.generate(
-        app_repo.Application.appList.length,
-        (index) => InkWell(
-          onTap: () => {openUrl(app_repo.Application.appList[index].url)},
-          child: Card(
-            elevation: 10.0,
-            shape: const RoundedRectangleBorder(
-              side: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-              borderRadius: BorderRadius.all(
-                Radius.circular(15),
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                children: [
-                  Expanded(
-                    child:
-                        Image.asset(app_repo.Application.appList[index].icon),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(5),
-                    child: Text(
-                      app_repo.Application.appList[index].title,
-                      style: const TextStyle(
-                          fontSize: 14, fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 }
+
+class AppScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+        PointerDeviceKind.trackpad,
+        PointerDeviceKind.stylus,
+      };
+}
+
+PageController pageController = PageController(
+  initialPage: 2,
+  keepPage: true,
+);
