@@ -32,7 +32,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String appBarTitle = 'MiDoze';
+  String appBarTitle = 'Apps';
 
   void changeTitle(String title) {
     setState(() {
