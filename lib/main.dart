@@ -35,16 +35,16 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   static List<String> titleList = ['Dials', 'ROMs', 'Apps'];
-  int pageIndex = 2;
+  var currentPageIndex = 2;
   String appBarTitle = titleList[2];
 
   void pageChanged(int index) {
     setState(
       () {
-        pageIndex = index;
+        currentPageIndex = index;
         appBarTitle = titleList[index];
 
-        pageController.animateToPage(pageIndex,
+        pageController.animateToPage(currentPageIndex,
             duration: const Duration(milliseconds: 500), curve: Curves.ease);
       },
     );
@@ -72,89 +72,87 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      body: SafeArea(
-        child: Row(
-          children: [
-            if (MediaQuery.of(context).size.width >= 640)
-              NavigationRail(
-                selectedIndex: pageIndex,
-                labelType: NavigationRailLabelType.all,
-                onDestinationSelected: (index) {
-                  setState(
-                    () {
-                      pageChanged(index);
-                    },
-                  );
-                },
-                destinations: const [
-                  NavigationRailDestination(
-                      icon: Icon(Icons.access_time_outlined),
-                      selectedIcon: Icon(Icons.access_time),
-                      label: Text('Dials')),
-                  NavigationRailDestination(
-                      icon: Icon(Icons.memory_outlined),
-                      selectedIcon: Icon(Icons.memory),
-                      label: Text('ROMs')),
-                  NavigationRailDestination(
-                      icon: Icon(Icons.widgets_outlined),
-                      selectedIcon: Icon(Icons.widgets),
-                      label: Text('Apps'))
-                ],
-              ),
-            const VerticalDivider(thickness: 1, width: 1),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      accentColor,
-                      Colors.red,
-                    ],
-                  ),
-                ),
-                child: PageView(
-                  controller: pageController,
-                  scrollBehavior: AppScrollBehavior(),
-                  scrollDirection: Axis.horizontal,
-                  onPageChanged: (index) {
+      body: Row(
+        children: [
+          if (MediaQuery.of(context).size.width >= 640)
+            NavigationRail(
+              useIndicator: true,
+              selectedIndex: currentPageIndex,
+              labelType: NavigationRailLabelType.all,
+              onDestinationSelected: (index) {
+                setState(
+                  () {
                     pageChanged(index);
                   },
-                  children: [
-                    const Text('Page 1'),
-                    const Text('Page 2'),
-                    deviceList(),
+                );
+              },
+              destinations: [
+                NavigationRailDestination(
+                    icon: const Icon(Icons.access_time_outlined),
+                    selectedIcon: const Icon(Icons.access_time),
+                    label: Text(titleList[0])),
+                NavigationRailDestination(
+                    icon: const Icon(Icons.memory_outlined),
+                    selectedIcon: const Icon(Icons.memory),
+                    label: Text(titleList[1])),
+                NavigationRailDestination(
+                    icon: const Icon(Icons.widgets_outlined),
+                    selectedIcon: const Icon(Icons.widgets),
+                    label: Text(titleList[2])),
+              ],
+            ),
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    accentColor,
+                    Colors.red,
                   ],
                 ),
               ),
+              child: PageView(
+                controller: pageController,
+                scrollBehavior: AppScrollBehavior(),
+                scrollDirection: Axis.horizontal,
+                onPageChanged: (index) {
+                  pageChanged(index);
+                },
+                children: [
+                  const Text('Page 1'),
+                  const Text('Page 2'),
+                  deviceList(),
+                ],
+              ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
       bottomNavigationBar: MediaQuery.of(context).size.width < 640
           ? BottomNavigationBar(
-              type: BottomNavigationBarType.shifting,
+              useLegacyColorScheme: false,
               selectedItemColor: accentColor,
               unselectedItemColor: Colors.blueGrey,
-              items: const <BottomNavigationBarItem>[
+              items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.access_time_outlined),
-                  activeIcon: Icon(Icons.access_time),
-                  label: "Dials",
+                  icon: const Icon(Icons.access_time_outlined),
+                  activeIcon: const Icon(Icons.access_time),
+                  label: titleList[0],
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.memory_outlined),
-                  activeIcon: Icon(Icons.memory),
-                  label: "ROMs",
+                  icon: const Icon(Icons.memory_outlined),
+                  activeIcon: const Icon(Icons.memory),
+                  label: titleList[1],
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.widgets_outlined),
-                  activeIcon: Icon(Icons.widgets),
-                  label: "Apps",
+                  icon: const Icon(Icons.widgets_outlined),
+                  activeIcon: const Icon(Icons.widgets),
+                  label: titleList[2],
                 )
               ],
-              currentIndex: pageIndex,
+              currentIndex: currentPageIndex,
               onTap: (int i) {
                 setState(
                   () {
