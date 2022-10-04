@@ -8,16 +8,19 @@ Widget watchfaceList() {
   return FutureBuilder(
     future: anything(),
     builder: ((context, snapshot) {
-      if (snapshot.data != null) {
+      if (snapshot.data == null) {
+        return const Text('Error');
+      } else {
         var response = snapshot.data.toString();
         var json = jsonDecode(response);
-        var watchface = watchface_remote.Watchface.fromJson(json);
+        var watchface =
+            watchface_remote.Watchface.fromJson(json as Map<String, dynamic>);
         var title = watchface.title;
         var preview = watchface.preview;
         var url = watchface.url;
         var length = watchface.length;
 
-        GridView.builder(
+        return GridView.builder(
           gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
             maxCrossAxisExtent: 200,
           ),
@@ -56,67 +59,10 @@ Widget watchfaceList() {
             );
           },
         );
-      } else if (snapshot.hasError) {
-        return Text('${snapshot.error}');
       }
       return const CircularProgressIndicator();
     }),
   );
-  // return FutureBuilder<watchface_remote.Watchface>(
-  //   future: getWatchfaceData('hmpace.watch.v7'),
-  //   builder: ((context, snapshot) {
-  //     if (snapshot.hasData) {
-  //       var response = jsonDecode(snapshot.data.toString());
-  //       var watchface = watchface_remote.Watchface.fromJson(
-  //           response as Map<String, dynamic>);
-
-  //       final count = watchface.length;
-
-  //       GridView.builder(
-  //         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-  //           maxCrossAxisExtent: 200,
-  //         ),
-  //         itemCount: count,
-  //         itemBuilder: (context, index) {
-  //           return Card(
-  //             elevation: 10,
-  //             shape: const RoundedRectangleBorder(
-  //               side: BorderSide(
-  //                 color: Colors.black,
-  //                 width: 1,
-  //               ),
-  //               borderRadius: BorderRadius.all(
-  //                 Radius.circular(15),
-  //               ),
-  //             ),
-  //             child: Padding(
-  //               padding: const EdgeInsets.all(5),
-  //               child: Column(
-  //                 children: [
-  //                   Expanded(
-  //                     child: Image.network(watchface.preview),
-  //                   ),
-  //                   Padding(
-  //                     padding: const EdgeInsets.all(5),
-  //                     child: Text(
-  //                       watchface.title,
-  //                       style: const TextStyle(
-  //                           fontSize: 14, fontWeight: FontWeight.bold),
-  //                       textAlign: TextAlign.center,
-  //                     ),
-  //                   ),
-  //                 ],
-  //               ),
-  //             ),
-  //           );
-  //         },
-  //       );
-  //     } else if (snapshot.hasError) {
-  //       return Text('${snapshot.error}');
-  //     }
-  //     return const CircularProgressIndicator();
-  //   }),
-  // );
 }
 
 Future<String> anything() async {
