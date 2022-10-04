@@ -45,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
         appBarTitle = titleList[index];
 
         pageController.animateToPage(currentPageIndex,
-            duration: const Duration(milliseconds: 500), curve: Curves.ease);
+            duration: const Duration(milliseconds: 250), curve: Curves.ease);
       },
     );
   }
@@ -103,13 +103,13 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           Expanded(
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    accentColor,
-                    Colors.red,
+                    Colors.purpleAccent,
+                    Colors.orangeAccent,
                   ],
                 ),
               ),
@@ -134,7 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ? BottomNavigationBar(
               useLegacyColorScheme: false,
               selectedItemColor: accentColor,
-              unselectedItemColor: Colors.blueGrey,
+              unselectedItemColor: Colors.black,
               items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
                   icon: const Icon(Icons.access_time_outlined),

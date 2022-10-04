@@ -26,13 +26,6 @@ alertDialog(BuildContext context) {
 
   Widget button(String label, Function() onPressed) {
     return ElevatedButton(
-      style: ButtonStyle(
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0),
-          ),
-        ),
-      ),
       onPressed: onPressed,
       child: Text(label),
     );

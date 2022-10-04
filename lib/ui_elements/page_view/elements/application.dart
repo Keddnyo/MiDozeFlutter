@@ -15,14 +15,14 @@ Widget deviceList() {
   return GridView.extent(
     crossAxisSpacing: 5,
     mainAxisSpacing: 5,
-    padding: const EdgeInsets.all(15),
+    padding: const EdgeInsets.all(5),
     maxCrossAxisExtent: 200,
     children: List.generate(
       app_repo.Application.appList.length,
       (index) => InkWell(
         onTap: () => {openUrl(app_repo.Application.appList[index].url)},
         child: Card(
-          elevation: 10.0,
+          elevation: 10,
           shape: const RoundedRectangleBorder(
             side: BorderSide(
               color: Colors.black,
@@ -33,7 +33,7 @@ Widget deviceList() {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(5),
             child: Column(
               children: [
                 Expanded(
