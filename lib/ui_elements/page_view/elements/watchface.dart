@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import '../../../data_models/remote/watchface.dart' as watchface_remote;
-import '../../../remote/requests.dart';
 import 'package:http/http.dart' as http;
 
 Widget watchfaceList() {
@@ -12,12 +11,55 @@ Widget watchfaceList() {
       if (snapshot.data != null) {
         var response = snapshot.data.toString();
         var json = jsonDecode(response);
-        var title = watchface_remote.Watchface.fromJson(json).title;
+        var watchface = watchface_remote.Watchface.fromJson(json);
+        var title = watchface.title;
+        var preview = watchface.preview;
+        var url = watchface.url;
+        var length = watchface.length;
 
-        return Text(title);
-      } else {
-        return const Text('null');
+        GridView.builder(
+          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 200,
+          ),
+          itemCount: length,
+          itemBuilder: (context, index) {
+            return Card(
+              elevation: 10,
+              shape: const RoundedRectangleBorder(
+                side: BorderSide(
+                  color: Colors.black,
+                  width: 1,
+                ),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(15),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(5),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Image.network(preview),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(5),
+                      child: Text(
+                        title,
+                        style: const TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      } else if (snapshot.hasError) {
+        return Text('${snapshot.error}');
       }
+      return const CircularProgressIndicator();
     }),
   );
   // return FutureBuilder<watchface_remote.Watchface>(
