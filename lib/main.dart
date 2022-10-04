@@ -34,20 +34,18 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String appBarTitle = 'Apps';
-
-  void changeTitle(String title) {
-    setState(() {
-      appBarTitle = title;
-    });
-  }
-
+  static List<String> titleList = ['Dials', 'ROMs', 'Apps'];
   int pageIndex = 2;
+  String appBarTitle = titleList[2];
 
   void pageChanged(int index) {
     setState(
       () {
         pageIndex = index;
+        appBarTitle = titleList[index];
+
+        pageController.animateToPage(pageIndex,
+            duration: const Duration(milliseconds: 500), curve: Curves.ease);
       },
     );
   }
@@ -84,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 onDestinationSelected: (index) {
                   setState(
                     () {
-                      pageChanged(pageIndex);
+                      pageChanged(index);
                     },
                   );
                 },
@@ -120,8 +118,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   controller: pageController,
                   scrollBehavior: AppScrollBehavior(),
                   scrollDirection: Axis.horizontal,
-                  onPageChanged: (currentPage) {
-                    pageChanged(currentPage);
+                  onPageChanged: (index) {
+                    pageChanged(index);
                   },
                   children: [
                     const Text('Page 1'),
@@ -160,21 +158,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onTap: (int i) {
                 setState(
                   () {
-                    pageIndex = i;
-                    pageController.animateToPage(pageIndex,
-                        duration: const Duration(milliseconds: 500),
-                        curve: Curves.ease);
-
-                    switch (i) {
-                      case 0:
-                        changeTitle('Dials');
-                        break;
-                      case 2:
-                        changeTitle('Apps');
-                        break;
-                      default:
-                        changeTitle('ROMs');
-                    }
+                    pageChanged(i);
                   },
                 );
               },
