@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'ui_elements/dialog.dart';
 import 'remote/requests.dart';
 import 'ui_elements/page_view/elements/application.dart';
+import 'ui_elements/page_view/elements/watchface.dart';
 
 void main() {
   runApp(const MyApp());
@@ -45,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
         appBarTitle = titleList[index];
 
         pageController.animateToPage(currentPageIndex,
-            duration: const Duration(milliseconds: 250), curve: Curves.ease);
+            duration: const Duration(milliseconds: 150), curve: Curves.ease);
       },
     );
   }
@@ -121,9 +122,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   pageChanged(index);
                 },
                 children: [
-                  const Text('Page 1'),
+                  watchfaceList(),
                   const Text('Page 2'),
-                  deviceList(),
+                  appList(),
                 ],
               ),
             ),

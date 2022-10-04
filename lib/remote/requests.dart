@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
-import '../data_models/firmware.dart';
+import '../data_models/remote/firmware.dart';
+import '../../../data_models/remote/watchface.dart' as watchface_remote;
 
 getFirmwareData(
   BuildContext context,
@@ -107,4 +109,22 @@ openUrl(String url) async {
       Uri.parse(url),
     );
   }
+}
+
+Future<watchface_remote.Watchface> getWatchfaceData(
+  String tag,
+) async {
+  return await http
+      .read(
+    Uri.https(
+      'cors-anywhere.herokuapp.com',
+      'https://watch-appstore.iot.mi.com/api/watchface/prize/tabs',
+      {
+        'model': tag,
+      },
+    ),
+  )
+      .then((response) {
+    return watchface_remote.Watchface.fromJson(jsonDecode(response));
+  });
 }

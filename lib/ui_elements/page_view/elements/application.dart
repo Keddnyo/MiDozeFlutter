@@ -2,16 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../remote/requests.dart';
 import '../../../repositories/application.dart' as app_repo;
 
-class AppTab extends StatelessWidget {
-  const AppTab({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return deviceList();
-  }
-}
-
-Widget deviceList() {
+Widget appList() {
   return GridView.extent(
     crossAxisSpacing: 5,
     mainAxisSpacing: 5,
