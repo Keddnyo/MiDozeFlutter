@@ -114,17 +114,31 @@ openUrl(String url) async {
 Future<watchface_remote.Watchface> getWatchfaceData(
   String tag,
 ) async {
-  return await http
-      .read(
+  // var path =
+  //     'https://cors-anywhere.herokuapp.comhttps://watch-appstore.iot.mi.com/api/watchface/prize/tabs?model=hmpace.watch.v7';
+  // HttpRequest.
+  // (path).then((String fileContents) {
+  //   print(fileContents.length);
+  // }).catchError((error) {
+  //   print(error.toString());
+  // });
+
+  return await http.read(
     Uri.https(
-      'cors-anywhere.herokuapp.com',
+      'fast-dawn-89938.herokuapp.com',
       'https://watch-appstore.iot.mi.com/api/watchface/prize/tabs',
       {
         'model': tag,
       },
     ),
-  )
-      .then((response) {
-    return watchface_remote.Watchface.fromJson(jsonDecode(response));
-  });
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json',
+      'Accept': '*/*'
+    },
+  ).then(
+    (response) {
+      return watchface_remote.Watchface.fromJson(jsonDecode(response));
+    },
+  );
 }
