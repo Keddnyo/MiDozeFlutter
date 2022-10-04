@@ -77,31 +77,32 @@ class _MyHomePageState extends State<MyHomePage> {
       body: SafeArea(
         child: Row(
           children: [
-            NavigationRail(
-              selectedIndex: pageIndex,
-              labelType: NavigationRailLabelType.all,
-              onDestinationSelected: (index) {
-                setState(
-                  () {
-                    pageChanged(pageIndex);
-                  },
-                );
-              },
-              destinations: const [
-                NavigationRailDestination(
-                    icon: Icon(Icons.access_time_outlined),
-                    selectedIcon: Icon(Icons.access_time),
-                    label: Text('Dials')),
-                NavigationRailDestination(
-                    icon: Icon(Icons.memory_outlined),
-                    selectedIcon: Icon(Icons.memory),
-                    label: Text('ROMs')),
-                NavigationRailDestination(
-                    icon: Icon(Icons.widgets_outlined),
-                    selectedIcon: Icon(Icons.widgets),
-                    label: Text('Apps'))
-              ],
-            ),
+            if (MediaQuery.of(context).size.width >= 640)
+              NavigationRail(
+                selectedIndex: pageIndex,
+                labelType: NavigationRailLabelType.all,
+                onDestinationSelected: (index) {
+                  setState(
+                    () {
+                      pageChanged(pageIndex);
+                    },
+                  );
+                },
+                destinations: const [
+                  NavigationRailDestination(
+                      icon: Icon(Icons.access_time_outlined),
+                      selectedIcon: Icon(Icons.access_time),
+                      label: Text('Dials')),
+                  NavigationRailDestination(
+                      icon: Icon(Icons.memory_outlined),
+                      selectedIcon: Icon(Icons.memory),
+                      label: Text('ROMs')),
+                  NavigationRailDestination(
+                      icon: Icon(Icons.widgets_outlined),
+                      selectedIcon: Icon(Icons.widgets),
+                      label: Text('Apps'))
+                ],
+              ),
             const VerticalDivider(thickness: 1, width: 1),
             Expanded(
               child: Container(
@@ -133,6 +134,53 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
+      bottomNavigationBar: MediaQuery.of(context).size.width < 640
+          ? BottomNavigationBar(
+              type: BottomNavigationBarType.shifting,
+              selectedItemColor: accentColor,
+              unselectedItemColor: Colors.blueGrey,
+              items: const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.access_time_outlined),
+                  activeIcon: Icon(Icons.access_time),
+                  label: "Dials",
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.memory_outlined),
+                  activeIcon: Icon(Icons.memory),
+                  label: "ROMs",
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.widgets_outlined),
+                  activeIcon: Icon(Icons.widgets),
+                  label: "Apps",
+                )
+              ],
+              currentIndex: pageIndex,
+              onTap: (int i) {
+                setState(
+                  () {
+                    pageIndex = i;
+                    pageController.animateToPage(pageIndex,
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.ease);
+
+                    switch (i) {
+                      case 0:
+                        changeTitle('Dials');
+                        break;
+                      case 2:
+                        changeTitle('Apps');
+                        break;
+                      default:
+                        changeTitle('ROMs');
+                    }
+                  },
+                );
+              },
+              showUnselectedLabels: false,
+            )
+          : null,
     );
   }
 }
