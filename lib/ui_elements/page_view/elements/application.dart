@@ -6,7 +6,7 @@ Widget appList() {
   return GridView.extent(
     crossAxisSpacing: 5,
     mainAxisSpacing: 5,
-    padding: const EdgeInsets.all(5),
+    padding: const EdgeInsets.all(10),
     maxCrossAxisExtent: 200,
     children: List.generate(
       app_repo.Application.appList.length,
@@ -24,7 +24,7 @@ Widget appList() {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(5),
+            padding: const EdgeInsets.all(15),
             child: Column(
               children: [
                 Expanded(

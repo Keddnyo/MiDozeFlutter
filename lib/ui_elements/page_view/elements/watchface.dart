@@ -10,6 +10,7 @@ Widget watchfaceList() {
     builder: ((context, snapshot) {
       if (snapshot.data != null) {
         return GridView.builder(
+          padding: const EdgeInsets.all(10),
           gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
             maxCrossAxisExtent: 200,
           ),
@@ -27,7 +28,7 @@ Widget watchfaceList() {
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.all(5),
+                padding: const EdgeInsets.all(15),
                 child: Column(
                   children: [
                     Expanded(

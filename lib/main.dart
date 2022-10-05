@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'MiDoze',
-      theme: ThemeData(primarySwatch: accentColor, useMaterial3: true),
+      theme: ThemeData(primarySwatch: accentColor),
       home: const MyHomePage(title: 'MiDoze'),
     );
   }
@@ -104,13 +104,13 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           Expanded(
             child: Container(
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Colors.purpleAccent,
-                    Colors.orangeAccent,
+                    accentColor,
+                    Colors.red,
                   ],
                 ),
               ),
