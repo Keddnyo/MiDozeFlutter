@@ -60,10 +60,16 @@ Widget watchfaceList() {
 Future<List<watchface_remote.Watchface>> anything() async {
   var response = await http.read(
     Uri.https(
-      'cors-anywhere.herokuapp.com',
-      'https://watch-appstore.iot.mi.com/api/watchface/prize/tabs',
+      'api.allorigins.win',
+      'raw',
       {
-        'model': 'hmpace.watch.v7',
+        'url': Uri.http(
+          'watch-appstore.iot.mi.com',
+          'api/watchface/prize/tabs',
+          {
+            'model': 'hmpace.watch.v7',
+          },
+        ).toString(),
       },
     ),
     headers: {
