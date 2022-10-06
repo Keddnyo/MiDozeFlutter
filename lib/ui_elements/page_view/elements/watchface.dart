@@ -52,7 +52,7 @@ Widget watchfaceList() {
       } else if (snapshot.hasError) {
         return Text('${snapshot.error}');
       }
-      return const CircularProgressIndicator();
+      return const Center(child: CircularProgressIndicator());
     }),
   );
 }
@@ -60,16 +60,10 @@ Widget watchfaceList() {
 Future<List<watchface_remote.Watchface>> anything() async {
   var response = await http.read(
     Uri.https(
-      'api.allorigins.win',
-      'raw',
+      'cors-anywhere.herokuapp.com',
+      'https://watch-appstore.iot.mi.com/api/watchface/prize/tabs',
       {
-        'url': Uri.http(
-          'watch-appstore.iot.mi.com',
-          'api/watchface/prize/tabs',
-          {
-            'model': 'hmpace.watch.v7',
-          },
-        ).toString(),
+        'model': 'hmpace.watch.v7',
       },
     ),
     headers: {
